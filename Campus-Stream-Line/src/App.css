@@ -14,3 +14,22 @@
 .auto-vertical-scroll:hover {
   animation-play-state: paused;
 }
+
+.vertical-scroll {
+  display: flex;
+  flex-direction: column;
+  animation: scrollUp 12s linear infinite;
+}
+
+.vertical-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}

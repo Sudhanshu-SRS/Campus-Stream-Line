@@ -17,6 +17,8 @@ import MyCommunity from "../../Pages/student/MyCommunity";
 
 import Profile from "../../Pages/Profile";
 import ProtectedRoute from "../../components/ProtectedRoute";
+import SavedColleges from "../../Pages/student/SavedColleges";
+import ApplyColleges from "../../Pages/student/ApplyColleges";
 
 const AppRoutes = () => {
   return (
@@ -38,16 +40,8 @@ const AppRoutes = () => {
           element={<Register role="institute" />}
         />
 
+        <Route path="/communityhub" element={<CommunityHub />} />
         {/* Protected */}
-        <Route
-          path="/communityhub"
-          element={
-            <ProtectedRoute>
-              <CommunityHub />
-            </ProtectedRoute>
-          }
-        />
-
         <Route
           path="/profile"
           element={
@@ -59,7 +53,7 @@ const AppRoutes = () => {
 
         {/* Student Section */}
         <Route
-          path="/studentdashboard"
+          path="/student/dashboard"
           element={
             <ProtectedRoute>
               <StudentDashboard />
@@ -71,6 +65,9 @@ const AppRoutes = () => {
         <Route path="/student/applications" element={<MyApplications />} />
         <Route path="/student/events" element={<RegisteredEvents />} />
         <Route path="/student/community" element={<MyCommunity />} />
+        <Route path="/student/profile" element={<Profile />} />
+        <Route path="/student/savedcolleges" element={<SavedColleges />} />
+        <Route path="/student/apply" element={<ApplyColleges />} />
       </Route>
     </Routes>
   );

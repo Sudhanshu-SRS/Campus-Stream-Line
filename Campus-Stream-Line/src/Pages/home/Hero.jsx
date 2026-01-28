@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { GraduationCap, Building2, ArrowRight } from "lucide-react";
+import Notifications from "./Notification";
 
 const Hero = () => {
   return (
@@ -49,7 +50,7 @@ const Hero = () => {
 
         {/* Right Visual Card */}
         <div className="relative">
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl p-8">
+          {/* <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6">
               Why Choose CAS?
             </h3>
@@ -60,7 +61,8 @@ const Hero = () => {
               <Feature text="Easy application tracking" />
               <Feature text="Secure and scalable platform" />
             </ul>
-          </div>
+          </div> */}
+          <Notifications />
         </div>
       </div>
     </section>

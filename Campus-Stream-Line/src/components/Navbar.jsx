@@ -1,5 +1,11 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Home, GraduationCap, Building2, Users } from "lucide-react";
+import {
+  Home,
+  GraduationCap,
+  Building2,
+  Users,
+  LayoutDashboard,
+} from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
@@ -40,6 +46,15 @@ const Navbar = () => {
                 institute
               />
             </>
+          )}
+
+          {user && (
+            <NavItem
+              to="/student/dashboard"
+              icon={<LayoutDashboard size={18} />}
+              label="Dashboard"
+              institute
+            />
           )}
 
           {user && (

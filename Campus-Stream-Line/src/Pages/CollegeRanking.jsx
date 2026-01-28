@@ -1,9 +1,47 @@
 import { MapPin, Star, Award, GraduationCap } from "lucide-react";
 import { colleges } from "../Data/mockColleges";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const CollegeRanking = () => {
+const CollegeRankingPage = () => {
   const navigate = useNavigate();
+
+  /* =======================
+     FILTER STATES
+  ======================= */
+  const [city, setCity] = useState("All");
+  const [stream, setStream] = useState("All");
+  const [minRating, setMinRating] = useState("All");
+  const [feeRange, setFeeRange] = useState("All");
+
+  /* =======================
+     FILTER OPTIONS
+  ======================= */
+  const cities = ["All", ...new Set(colleges.map((c) => c.location))];
+  const streams = ["All", ...new Set(colleges.flatMap((c) => c.streams))];
+
+  /* =======================
+     FILTER LOGIC
+  ======================= */
+  const filteredColleges = colleges.filter((college) => {
+    const cityMatch = city === "All" || college.location === city;
+
+    const streamMatch = stream === "All" || college.streams.includes(stream);
+
+    const ratingMatch =
+      minRating === "All" || college.rating >= Number(minRating);
+
+    const feeMatch =
+      feeRange === "All" ||
+      (feeRange === "low" && college.feesNumeric <= 100000) ||
+      (feeRange === "mid" &&
+        college.feesNumeric > 100000 &&
+        college.feesNumeric <= 300000) ||
+      (feeRange === "high" && college.feesNumeric > 300000);
+
+    return cityMatch && streamMatch && ratingMatch && feeMatch;
+  });
+
   return (
     <div className="min-h-screen bg-slate-50 px-6 py-10">
       {/* Header */}
@@ -16,9 +54,80 @@ const CollegeRanking = () => {
         </p>
       </div>
 
+      {/* Filters */}
+      <div className="max-w-6xl mx-auto mb-8 bg-white p-4 rounded-xl shadow-sm border flex flex-wrap gap-4">
+        {/* City */}
+        <select
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          className="px-4 py-2 rounded-full border"
+        >
+          {cities.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+
+        {/* Stream */}
+        <select
+          value={stream}
+          onChange={(e) => setStream(e.target.value)}
+          className="px-4 py-2 rounded-full border"
+        >
+          {streams.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+
+        {/* Rating */}
+        <select
+          value={minRating}
+          onChange={(e) => setMinRating(e.target.value)}
+          className="px-4 py-2 rounded-full border"
+        >
+          <option value="All">All Ratings</option>
+          <option value="4">4★ & above</option>
+          <option value="4.5">4.5★ & above</option>
+        </select>
+
+        {/* Fees */}
+        <select
+          value={feeRange}
+          onChange={(e) => setFeeRange(e.target.value)}
+          className="px-4 py-2 rounded-full border"
+        >
+          <option value="All">All Fees</option>
+          <option value="low">Below ₹1L</option>
+          <option value="mid">₹1L – ₹3L</option>
+          <option value="high">Above ₹3L</option>
+        </select>
+
+        {/* Reset */}
+        <button
+          onClick={() => {
+            setCity("All");
+            setStream("All");
+            setMinRating("All");
+            setFeeRange("All");
+          }}
+          className="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 transition"
+        >
+          Reset
+        </button>
+      </div>
+
       {/* College Cards */}
       <div className="max-w-6xl mx-auto space-y-6">
-        {colleges.map((college) => (
+        {filteredColleges.length === 0 && (
+          <div className="text-center text-slate-600 py-10">
+            No colleges found for selected filters
+          </div>
+        )}
+
+        {filteredColleges.map((college) => (
           <div
             key={college.id}
             className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200"
@@ -110,4 +219,4 @@ const CollegeRanking = () => {
   );
 };
 
-export default CollegeRanking;
+export default CollegeRankingPage;

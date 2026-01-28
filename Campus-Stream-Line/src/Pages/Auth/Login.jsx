@@ -70,7 +70,7 @@ const Login = ({ role = "institute" }) => {
       alert("Login successful");
 
       if (role === "student") {
-        navigate("/studentdashboard");
+        navigate("/student/dashboard");
       } else {
         navigate("/");
       }
