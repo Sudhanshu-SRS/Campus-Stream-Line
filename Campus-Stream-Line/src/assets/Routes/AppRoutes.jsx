@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+
 import Login from "../../Pages/Auth/Login";
 import Register from "../../Pages/Auth/Register";
 
@@ -9,39 +10,37 @@ import CollegeDetails from "../../Pages/CollegeDetails";
 import AllHappenings from "../../Pages/home/AllHappenings";
 
 import CommunityHub from "../../components/community/CommunityHub";
+
 import StudentDashboard from "../../Pages/student/StudentDashboard";
 import CompareColleges from "../../Pages/student/CompareColleges";
 import MyApplications from "../../Pages/student/MyApplications";
 import RegisteredEvents from "../../Pages/student/RegisteredEvents";
 import MyCommunity from "../../Pages/student/MyCommunity";
+import SavedColleges from "../../Pages/student/SavedColleges";
+import ApplyColleges from "../../Pages/student/ApplyColleges";
 
 import Profile from "../../Pages/Profile";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import SavedColleges from "../../Pages/student/SavedColleges";
-import ApplyColleges from "../../Pages/student/ApplyColleges";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
+
         {/* Public */}
         <Route path="/" element={<Home />} />
         <Route path="/ranking" element={<CollegeRanking />} />
         <Route path="/college/:id" element={<CollegeDetails />} />
         <Route path="/happenings" element={<AllHappenings />} />
+        <Route path="/communityhub" element={<CommunityHub />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login role="institute" />} />
         <Route path="/studentlogin" element={<Login role="student" />} />
-
         <Route path="/register" element={<Register role="student" />} />
-        <Route
-          path="/instituteregister"
-          element={<Register role="institute" />}
-        />
+        <Route path="/instituteregister" element={<Register role="institute" />} />
 
-        <Route path="/communityhub" element={<CommunityHub />} />
-        {/* Protected */}
+        {/* Protected Profile */}
         <Route
           path="/profile"
           element={
@@ -68,6 +67,7 @@ const AppRoutes = () => {
         <Route path="/student/profile" element={<Profile />} />
         <Route path="/student/savedcolleges" element={<SavedColleges />} />
         <Route path="/student/apply" element={<ApplyColleges />} />
+
       </Route>
     </Routes>
   );

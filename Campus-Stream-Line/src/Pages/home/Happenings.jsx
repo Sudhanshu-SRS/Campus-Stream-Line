@@ -8,9 +8,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-/* =======================
-   MOCK DATA (API READY)
-======================= */
+/* ===================== MOCK EVENTS ===================== */
+
 const mockEvents = [
   {
     id: 1,
@@ -40,80 +39,57 @@ const mockEvents = [
   },
 ];
 
-// duplicate for infinite scroll illusion
+// Duplicate list for smooth scroll effect
 const scrollingEvents = [...mockEvents, ...mockEvents];
 
 const Happenings = () => {
   const navigate = useNavigate();
+
   return (
-    <section className="bg-white py-20">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <span
-            className="
-  inline-flex items-center gap-3 px-6 py-2 rounded-full
-  bg-indigo-100 text-indigo-600 text-2xl font-semibold
-  animate-pulse
-  transform-gpu
-  transition
-  hover:scale-105
-  shadow-md shadow-indigo-200/60
-"
-          >
-            <Sparkles size={28} />
-            Happening
+    <section className="relative py-28 overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+
+      {/* BACKGROUND GLOW */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-indigo-300/30 blur-3xl rounded-full animate-floatSlow"></div>
+
+      <div
+        className="absolute bottom-[-120px] right-[-120px] w-[420px] h-[420px] bg-pink-300/30 blur-3xl rounded-full animate-floatSlow"
+        style={{ animationDelay: "2s" }}
+      ></div>
+
+      <div className="relative max-w-6xl mx-auto px-6">
+
+        {/* HEADER */}
+        <div className="text-center mb-16 animate-fadeInUp">
+          <span className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-indigo-100 text-indigo-600 font-semibold shadow-sm">
+            <Sparkles size={18} />
+            Latest Happenings
           </span>
 
-          <h2 className="text-xl md:text-3xl text-gray-800 mt-4">
-            Stay updated with the latest{" "}
-            <span className="text-blue-400">events and opportunities</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mt-6 tracking-tight">
+            Stay Updated with{" "}
+            <span className="text-indigo-600">Live Events & Opportunities</span>
           </h2>
+
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            Admissions, counselling updates, scholarships, and campus events — all in one place.
+          </p>
         </div>
 
-        {/* Auto Scroll Container */}
-        <div className="relative h-130 overflow-hidden">
-          <div className="auto-vertical-scroll space-y-8">
-            {scrollingEvents.map((event, index) => (
-              <EventCard key={index} event={event} />
-            ))}
-          </div>
+        {/* EVENTS LIST */}
+        <div className="space-y-10">
+          {scrollingEvents.map((event, index) => (
+            <EventCard key={index} event={event} index={index} />
+          ))}
         </div>
-        {/* View All Button */}
-        <div className="flex justify-center mt-8">
+
+        {/* VIEW ALL BUTTON */}
+        <div className="flex justify-center mt-14">
           <button
-            onClick={() => {
-              navigate("/happenings");
-            }}
-            className="
-      group
-      inline-flex items-center gap-3
-      px-8 py-3
-      rounded-full
-      bg-indigo-600
-      text-white
-      font-semibold
-      transition-all duration-300
-      hover:bg-indigo-700
-      hover:scale-105
-      shadow-lg shadow-indigo-300/40
-    "
+            onClick={() => navigate("/happenings")}
+            className="group inline-flex items-center gap-3 px-10 py-3 rounded-full bg-indigo-600 text-white font-semibold shadow-xl hover:bg-indigo-700 hover:scale-105 transition"
           >
-            <span>View All Happenings</span>
-
-            {/* Arrow */}
-            <span
-              className="
-        flex items-center justify-center
-        w-8 h-8
-        rounded-full
-        transition-all duration-300
-        group-hover:bg-white/20
-        group-hover:translate-x-1
-              "
-            >
-              <ArrowRight size={18} />
-            </span>
+            View All Happenings
+            <ArrowRight className="group-hover:translate-x-2 transition" size={18} />
           </button>
         </div>
       </div>
@@ -123,26 +99,33 @@ const Happenings = () => {
 
 export default Happenings;
 
-/* =======================
-   EVENT CARD
-======================= */
-const EventCard = ({ event }) => {
+/* ===================== EVENT CARD ===================== */
+
+const EventCard = ({ event, index }) => {
   return (
-    <div className="relative bg-linear-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-3xl p-8 shadow-sm hover:shadow-lg transition">
-      <span className="inline-block mb-4 px-4 py-1 rounded-full bg-indigo-600 text-white text-sm font-semibold">
+    <div
+      className="relative bg-white/80 backdrop-blur-xl border border-white/60 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition hover:-translate-y-2 animate-fadeInUp"
+      style={{ animationDelay: `${index * 0.12}s` }}
+    >
+      {/* Badge */}
+      <span className="inline-block mb-4 px-4 py-1 rounded-full bg-indigo-600 text-white text-xs font-semibold shadow">
         {event.badge}
       </span>
 
-      <h3 className="text-2xl font-bold text-gray-800">{event.title}</h3>
+      {/* Title */}
+      <h3 className="text-xl md:text-2xl font-bold text-gray-900">
+        {event.title}
+      </h3>
 
-      <p className="mt-4 text-gray-600 leading-relaxed">{event.description}</p>
+      {/* Description */}
+      <p className="mt-3 text-gray-600 leading-relaxed">
+        {event.description}
+      </p>
 
-      <div className="mt-6 space-y-3 text-sm text-gray-700">
+      {/* Info Grid */}
+      <div className="mt-6 grid sm:grid-cols-2 gap-3 text-sm text-gray-700">
         <InfoItem icon={<MapPin size={16} />} text={event.location} />
-        <InfoItem
-          icon={<CalendarDays size={16} />}
-          text={`Event Date: ${event.date}`}
-        />
+        <InfoItem icon={<CalendarDays size={16} />} text={`Event Date: ${event.date}`} />
         <InfoItem icon={<Phone size={16} />} text={event.contact.phone} />
         <InfoItem icon={<Mail size={16} />} text={event.contact.email} />
       </div>
@@ -150,11 +133,10 @@ const EventCard = ({ event }) => {
   );
 };
 
-/* =======================
-   INFO ITEM
-======================= */
+/* ===================== INFO ITEM ===================== */
+
 const InfoItem = ({ icon, text }) => (
-  <div className="flex items-center gap-3">
+  <div className="flex items-center gap-2">
     <span className="text-indigo-600">{icon}</span>
     <span>{text}</span>
   </div>

@@ -1,163 +1,173 @@
-import { useState } from "react";
-import {
-  Calendar,
-  MapPin,
-  Clock,
-  BadgeCheck,
-  XCircle,
-  Search,
-} from "lucide-react";
-import { events as mockEvents } from "../../Data/mockEvents";
+import { motion } from "framer-motion";
 
-const AllHappenings = () => {
-  const [search, setSearch] = useState("");
+const events = [
+  {
+    title: "Centralized Admission Drive 2026",
+    tag: "Admissions Open",
+    desc: "The centralized admission process for the academic year 2026 has officially begun.",
+    location: "Bhubaneswar, Odisha",
+    date: "2026-03-15",
+    phone: "+91 98765 43210",
+    email: "admissions@casportal.in",
+  },
+  {
+    title: "Phase-1 Counselling Schedule Released",
+    tag: "Counselling Update",
+    desc: "Students are requested to check their counselling slots and prepare required documents.",
+    location: "Online",
+    date: "2026-03-22",
+    phone: "+91 91234 56789",
+    email: "support@casportal.in",
+  },
+  {
+    title: "National Scholarship Program",
+    tag: "Scholarships",
+    desc: "Merit-based scholarships open for engineering and medical students.",
+    location: "India",
+    date: "2026-04-10",
+    phone: "+91 99876 54321",
+    email: "scholarships@casportal.in",
+  },
+];
 
-  // 🔍 Filter logic
-  const filteredEvents = mockEvents.filter((event) => {
-    const query = search.toLowerCase();
+const infiniteEvents = [...events, ...events];
+const stars = Array.from({ length: 80 });
 
-    return (
-      event.title.toLowerCase().includes(query) ||
-      event.college.toLowerCase().includes(query) ||
-      event.type.toLowerCase().includes(query) ||
-      event.tags.join(" ").toLowerCase().includes(query)
-    );
-  });
-
+export default function AllHappenings() {
   return (
-    <div className="min-h-screen bg-slate-50 px-6 py-10">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold text-slate-800">
-          College Happenings & Events
-        </h1>
-        <p className="text-slate-600 mt-2">
-          Search and explore workshops, fests, webinars, and campus activities
-        </p>
+    <div
+      className="relative min-h-screen px-6 py-20 overflow-hidden bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=1600&q=80')",
+      }}
+    >
+      {/* LIGHT OVERLAY */}
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-xl" />
+
+      {/* 🌠 FLOATING STARS */}
+      <div className="absolute inset-0 pointer-events-none">
+        {stars.map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute w-[2px] h-[2px] bg-indigo-400/60 rounded-full"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              opacity: Math.random(),
+            }}
+            animate={{
+              y: ["0%", "100%"],
+              opacity: [0.2, 1, 0.2],
+              scale: [0.6, 1.3, 0.6],
+            }}
+            transition={{
+              duration: 10 + Math.random() * 14,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
       </div>
 
-      {/* Search bar */}
+      {/* 🌸 GLOW BLOBS */}
+      <motion.div
+        className="absolute w-[520px] h-[520px] bg-indigo-300/40 blur-3xl rounded-full top-[-140px] left-[-140px]"
+        animate={{ x: [0, 80, 0], y: [0, 60, 0] }}
+        transition={{ duration: 18, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute w-[520px] h-[520px] bg-pink-300/40 blur-3xl rounded-full bottom-[-140px] right-[-140px]"
+        animate={{ x: [0, -80, 0], y: [0, -60, 0] }}
+        transition={{ duration: 20, repeat: Infinity }}
+      />
 
-      <div className="max-w-6xl mx-auto mb-10">
-        <div className="relative max-w-md">
-          {/* Search Icon */}
-          <Search
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-          />
+      {/* 🌊 HEADER */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="text-center max-w-3xl mx-auto mb-16 relative z-10"
+      >
+        <span className="inline-flex px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold shadow-lg">
+          ✨ Latest Happenings
+        </span>
 
-          {/* Input */}
-          <input
-            type="text"
-            placeholder="Search by event, college, type, or tag..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-12 py-3 rounded-full border border-slate-300
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-          />
+        <motion.h1
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+          className="mt-6 text-4xl md:text-5xl font-extrabold text-gray-900"
+        >
+          Stay Updated with{" "}
+          <span className="text-indigo-600">Live Events</span> &{" "}
+          <span className="text-purple-600">Opportunities</span>
+        </motion.h1>
 
-          {/* Clear Button */}
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2
-                   text-slate-400 hover:text-red-600
-                   transition"
-              aria-label="Clear search"
+        <motion.p
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="mt-4 text-gray-700"
+        >
+          Admissions, counselling updates, scholarships, and campus events.
+        </motion.p>
+      </motion.div>
+
+      {/* 🎠 AUTO VERTICAL SCROLL */}
+      <div className="relative z-10 max-w-5xl mx-auto h-[560px] overflow-hidden">
+        <motion.div
+          className="flex flex-col gap-8"
+          animate={{ y: ["0%", "-50%"] }}
+          transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+        >
+          {infiniteEvents.map((event, index) => (
+            <motion.div
+              key={index}
+              whileHover={{
+                scale: 1.04,
+                rotate: 0.3,
+                boxShadow: "0 30px 80px rgba(99,102,241,0.35)",
+              }}
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 4 + index, repeat: Infinity }}
+              className="bg-white/90 backdrop-blur-xl rounded-3xl p-7 shadow-xl border border-indigo-100"
             >
-              ✕
-            </button>
-          )}
-        </div>
-      </div>
+              <span className="inline-block px-4 py-1 mb-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-semibold">
+                {event.tag}
+              </span>
 
-      {/* Events Grid */}
-      <div className="max-w-6xl mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((event) => (
-            <div
-              key={event.id}
-              className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition border border-slate-200 overflow-hidden"
-            >
-              {/* Image */}
-              <img
-                src={event.image}
-                alt={event.title}
-                className="h-44 w-full object-cover"
-              />
+              <h2 className="text-xl font-bold text-indigo-700">
+                {event.title}
+              </h2>
 
-              {/* Content */}
-              <div className="p-5 flex flex-col h-full">
-                <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full w-fit">
-                  {event.type}
-                </span>
+              <p className="mt-2 text-gray-700">
+                {event.desc}
+              </p>
 
-                <h2 className="text-lg font-semibold text-slate-800 mt-3">
-                  {event.title}
-                </h2>
-
-                <p className="text-sm text-slate-600 mt-1">{event.college}</p>
-
-                <div className="space-y-2 mt-4 text-sm text-slate-600">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={16} />
-                    {event.date}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock size={16} />
-                    {event.time}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin size={16} />
-                    {event.location} ({event.mode})
-                  </div>
-                </div>
-
-                <p className="text-sm text-slate-600 mt-4 line-clamp-3">
-                  {event.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {event.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="text-xs px-2 py-1 bg-slate-100 rounded-md"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Footer */}
-                <div className="mt-auto pt-5 flex items-center justify-between">
-                  {event.registrationOpen ? (
-                    <span className="flex items-center gap-1 text-green-600 text-sm">
-                      <BadgeCheck size={16} />
-                      Registration Open
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1 text-red-500 text-sm">
-                      <XCircle size={16} />
-                      Closed
-                    </span>
-                  )}
-
-                  <button className="px-4 py-2 rounded-full bg-indigo-600 text-white text-sm hover:bg-indigo-700 transition">
-                    View Details
-                  </button>
-                </div>
+              <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-600">
+                <div>📍 {event.location}</div>
+                <div>📅 {event.date}</div>
+                <div>📞 {event.phone}</div>
+                <div>✉️ {event.email}</div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-full text-center text-slate-500 mt-20">
-            No events found matching your search.
-          </div>
-        )}
+
+              <motion.button
+                whileHover={{ scale: 1.12 }}
+                animate={{
+                  boxShadow: [
+                    "0 0 0 rgba(99,102,241,0.3)",
+                    "0 0 30px rgba(99,102,241,0.7)",
+                    "0 0 0 rgba(99,102,241,0.3)",
+                  ],
+                }}
+                transition={{ duration: 2.4, repeat: Infinity }}
+                className="mt-5 px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold shadow"
+              >
+                View Details →
+              </motion.button>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );
-};
-
-export default AllHappenings;
+}

@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authAPI";
 import { AuthContext } from "../../context/AuthContext";
+import { motion } from "framer-motion";
 
 const Register = ({ role = "student" }) => {
   const { login } = useContext(AuthContext);
@@ -27,20 +28,10 @@ const Register = ({ role = "student" }) => {
     setLoading(true);
 
     try {
-      const res = await registerUser({
-        ...formData,
-        role,
-      });
-
-      login(res.data); // Save token + user
-      alert("Registration successful");
-
+      const res = await registerUser({ ...formData, role });
+      login(res.data);
       navigate(role === "student" ? "/student/dashboard" : "/");
     } catch (err) {
-      console.error(
-        "Register Error Response:",
-        err.response?.data || err.message,
-      );
       alert(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
@@ -48,69 +39,103 @@ const Register = ({ role = "student" }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-100 via-purple-100 to-pink-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Create Account 🎉
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 px-4 relative overflow-hidden">
+
+      {/* Floating glowing blobs */}
+      <div className="absolute w-72 h-72 bg-pink-400/40 blur-3xl rounded-full top-10 left-10 animate-pulse"></div>
+      <div className="absolute w-72 h-72 bg-indigo-400/40 blur-3xl rounded-full bottom-10 right-10 animate-pulse"></div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: 40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md bg-white/15 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/30"
+      >
+
+        {/* Title */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-center mb-6"
+        >
+          <h1 className="text-3xl font-bold text-white tracking-wide">
+            Create Account 🚀
           </h1>
-          <p className="text-indigo-500">Register as {role}</p>
-        </div>
+          <p className="text-indigo-200 mt-1">Register as {role}</p>
+        </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <input
+
+          {/* Name */}
+          <motion.input
+            whileFocus={{ scale: 1.04 }}
             name="name"
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-indigo-50"
+            className="w-full px-4 py-3 rounded-xl bg-white/80 focus:ring-2 focus:ring-indigo-400 outline-none transition"
             required
           />
 
-          <input
+          {/* Email */}
+          <motion.input
+            whileFocus={{ scale: 1.04 }}
             name="email"
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-indigo-50"
+            className="w-full px-4 py-3 rounded-xl bg-white/80 focus:ring-2 focus:ring-indigo-400 outline-none transition"
             required
           />
 
+          {/* Password */}
           <div className="relative">
-            <input
+            <motion.input
+              whileFocus={{ scale: 1.04 }}
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 pr-12 rounded-lg bg-indigo-50"
+              className="w-full px-4 py-3 pr-12 rounded-xl bg-white/80 focus:ring-2 focus:ring-indigo-400 outline-none transition"
               required
             />
-            <button
+            <motion.button
               type="button"
+              whileTap={{ scale: 0.85 }}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+            </motion.button>
           </div>
 
-          <button
+          {/* Button */}
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-500 to-pink-500 shadow-lg hover:shadow-xl transition"
           >
             {loading ? "Creating Account..." : "Register"}
-          </button>
+          </motion.button>
         </form>
 
-        <p className="text-center mt-5 text-sm text-gray-600">
+        {/* Footer */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-5 text-sm text-white/80"
+        >
           Already have an account?{" "}
-          <Link to="/login" className="text-indigo-500 font-semibold">
+          <Link to="/login" className="text-yellow-300 font-semibold hover:underline">
             Login
           </Link>
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     </div>
   );
 };
