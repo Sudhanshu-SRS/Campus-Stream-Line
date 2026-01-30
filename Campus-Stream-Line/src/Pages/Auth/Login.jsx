@@ -54,6 +54,34 @@ const Login = ({ role = "institute" }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const res = await loginUser({
+  //       email: formData.userId,
+  //       password: formData.password,
+  //       role,
+  //     });
+
+  //     login(res.data);
+
+  //     alert("Login successful");
+
+  //     if (role === "student") {
+  //       navigate("/student/dashboard");
+  //     } else {
+  //       navigate("/");
+  //     }
+  //   } catch (err) {
+  //     alert("Invalid credentials");
+  //     console.error("Login Error:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -66,11 +94,12 @@ const Login = ({ role = "institute" }) => {
       });
 
       login(res.data);
-
       alert("Login successful");
 
       if (role === "student") {
         navigate("/student/dashboard");
+      } else if (role === "institute") {
+        navigate("/institute");
       } else {
         navigate("/");
       }

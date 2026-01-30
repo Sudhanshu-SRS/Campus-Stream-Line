@@ -1,5 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./assets/Routes/AppRoutes";
+import AppRoutes from "./Routes/AppRoutes";
+
 import "./App.css";
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";

@@ -14,3 +14,4 @@ export const fetchPosts = () => API.get("/posts");
 export const createPost = (data) => API.post("/posts", data);
 export const fetchTrending = () => API.get("/posts/trending/topics");
 export const fetchGroups = () => API.get("/groups");
+
