@@ -1,24 +1,25 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../../Pages/Auth/Login";
-import Register from "../../Pages/Auth/Register";
+import Login from "../Pages/Auth/Login";
+import Register from "../Pages/Auth/Register";
 
-import Home from "../../Pages/home/Home";
-import Layout from "../../Layout/Layout";
-import CollegeRanking from "../../Pages/CollegeRanking";
-import CollegeDetails from "../../Pages/CollegeDetails";
-import AllHappenings from "../../Pages/home/AllHappenings";
+import Home from "../Pages/home/Home";
+import Layout from "../Layout/Layout";
+import CollegeRanking from "../Pages/CollegeRanking";
+import CollegeDetails from "../Pages/CollegeDetails";
+import AllHappenings from "../Pages/home/AllHappenings";
 
-import CommunityHub from "../../components/community/CommunityHub";
-import StudentDashboard from "../../Pages/student/StudentDashboard";
-import CompareColleges from "../../Pages/student/CompareColleges";
-import MyApplications from "../../Pages/student/MyApplications";
-import RegisteredEvents from "../../Pages/student/RegisteredEvents";
-import MyCommunity from "../../Pages/student/MyCommunity";
+import CommunityHub from "../components/community/CommunityHub";
+import StudentDashboard from "../Pages/student/StudentDashboard";
+import CompareColleges from "../Pages/student/CompareColleges";
+import MyApplications from "../Pages/student/MyApplications";
+import RegisteredEvents from "../Pages/student/RegisteredEvents";
+import MyCommunity from "../Pages/student/MyCommunity";
 
-import Profile from "../../Pages/Profile";
-import ProtectedRoute from "../../components/ProtectedRoute";
-import SavedColleges from "../../Pages/student/SavedColleges";
-import ApplyColleges from "../../Pages/student/ApplyColleges";
+import Profile from "../Pages/Profile";
+import ProtectedRoute from "../components/ProtectedRoute";
+import SavedColleges from "../Pages/student/SavedColleges";
+import ApplyColleges from "../Pages/student/ApplyColleges";
+import InstituteRoutes from "./InsituteRoute";
 
 const AppRoutes = () => {
   return (
@@ -68,6 +69,9 @@ const AppRoutes = () => {
         <Route path="/student/profile" element={<Profile />} />
         <Route path="/student/savedcolleges" element={<SavedColleges />} />
         <Route path="/student/apply" element={<ApplyColleges />} />
+
+        {/*Insitute */}
+        <Route path="/institute/*" element={<InstituteRoutes />} />
       </Route>
     </Routes>
   );
