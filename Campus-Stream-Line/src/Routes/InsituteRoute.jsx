@@ -15,6 +15,7 @@ import ScheduleInterview from "../institute/pages/ScheduleInterview";
 import Reports from "../institute/pages/Reports";
 import Settings from "../institute/pages/Settings";
 import NotFound from "../institute/pages/NotFound";
+import UserManagement from "../institute/pages/UserManagement";
 
 const InstituteRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const InstituteRoutes = () => {
       <Route element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="profile" element={<InstituteProfile />} />
+        <Route path="users" element={<UserManagement />} />
         <Route path="courses" element={<Courses />} />
         <Route path="courses/new" element={<CourseForm />} />
         <Route path="courses/edit/:id" element={<CourseForm />} />

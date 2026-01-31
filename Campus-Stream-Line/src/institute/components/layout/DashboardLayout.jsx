@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
+  Users,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Button } from "../../components/ui/button";
@@ -36,6 +37,8 @@ const navItems = [
   { path: "/institute/announcements", label: "Announcements", icon: Megaphone },
   { path: "/institute/interviews", label: "Interviews", icon: Calendar },
   { path: "/institute/reports", label: "Reports", icon: BarChart3 },
+  
+  { path: "/institute/users", label: "User Management", icon: Users },
   { path: "/institute/settings", label: "Settings", icon: Settings },
 ];
 

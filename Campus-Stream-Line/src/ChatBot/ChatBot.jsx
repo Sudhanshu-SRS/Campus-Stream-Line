@@ -5,9 +5,6 @@ import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
 export default function Chatbot({
   title = "AI Assistant 🤖",
@@ -22,6 +19,7 @@ export default function Chatbot({
   const [loading, setLoading] = useState(false);
   const [docContext, setDocContext] = useState("");
   const endRef = useRef(null);
+   const API_BASE = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(messages));
@@ -49,61 +47,47 @@ export default function Chatbot({
     return text;
   };
 
-  const sendMessage = async (text) => {
-    if (!text || !text.trim()) return;
 
-    setMessages((prev) => [...prev, { role: "user", text }]);
-    setInput("");
-    setLoading(true);
 
-    // 🔐 VERY IMPORTANT: hard limit
-    const safeDoc = docContext
-      ? docContext.replace(/\s+/g, " ").slice(0, 3500)
-      : "";
+const sendMessage = async (text) => {
+  if (!text.trim()) return;
 
-    const safePrompt = `
-${prompt}
+  setMessages((prev) => [...prev, { role: "user", text }]);
+  setInput("");
+  setLoading(true);
 
-${safeDoc ? "Use the following document if relevant:\n" + safeDoc : ""}
+  try {
+    const res = await fetch(`${API_BASE}/ai/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        prompt,
+        docContext,
+      }),
+    });
 
-User question: ${text}
-`.trim();
+    const data = await res.json();
 
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: safePrompt }],
-            },
-          ],
-        }),
-      });
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: data.reply || "No response" },
+    ]);
 
-      const data = await res.json();
+    speak(data.reply);
 
-      if (data.error) {
-        console.error("Gemini FULL error:", data.error);
-        throw new Error(data.error.message);
-      }
+  } catch (err) {
+    console.error("Chat error:", err);
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: "⚠️ Backend not responding." },
+    ]);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      const reply = data.candidates[0].content.parts[0].text;
 
-      setMessages((prev) => [...prev, { role: "bot", text: reply }]);
-      speak(reply);
-    } catch (err) {
-      console.error("Chat error:", err.message);
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: "⚠️ Gemini rejected the request." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   //clear chat function
   const clearChat = () => {
