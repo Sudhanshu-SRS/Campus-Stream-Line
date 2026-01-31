@@ -6,7 +6,12 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
+import instituteRoutes from "./routes/instituteRoutes.js";
+import departmentRoutes from "./routes/departmentRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
+import geminiRoutes from "./routes/geminiRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -21,9 +26,13 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 // Routes
+app.use("/api/ai", geminiRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/groups", groupRoutes);
-
+app.use("/api/institutes", instituteRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/admin", adminRoutes);
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on ${process.env.PORT || 5000}`);
 });

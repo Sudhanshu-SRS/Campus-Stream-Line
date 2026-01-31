@@ -32,13 +32,14 @@ const AppRoutes = () => {
         <Route path="/happenings" element={<AllHappenings />} />
 
         {/* Auth */}
-        <Route path="/login" element={<Login role="institute" />} />
+       <Route path="/login" element={<Login role="institute_admin" />} />
+
         <Route path="/studentlogin" element={<Login role="student" />} />
 
         <Route path="/register" element={<Register role="student" />} />
         <Route
           path="/instituteregister"
-          element={<Register role="institute" />}
+          element={<Register role="institute_admin" />}
         />
 
         <Route path="/communityhub" element={<CommunityHub />} />
@@ -53,14 +54,15 @@ const AppRoutes = () => {
         />
 
         {/* Student Section */}
-        <Route
-          path="/student/dashboard"
-          element={
-            <ProtectedRoute>
-              <StudentDashboard />
-            </ProtectedRoute>
-          }
-        />
+       <Route
+  path="/student/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["student"]}>
+      <StudentDashboard />
+    </ProtectedRoute>
+  }
+/>
+
 
         <Route path="/student/compare" element={<CompareColleges />} />
         <Route path="/student/applications" element={<MyApplications />} />
@@ -71,7 +73,15 @@ const AppRoutes = () => {
         <Route path="/student/apply" element={<ApplyColleges />} />
 
         {/*Insitute */}
-        <Route path="/institute/*" element={<InstituteRoutes />} />
+       <Route
+  path="/institute/*"
+  element={
+    <ProtectedRoute allowedRoles={["institute_admin"]}>
+      <InstituteRoutes />
+    </ProtectedRoute>
+  }
+/>
+
       </Route>
     </Routes>
   );
