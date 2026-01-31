@@ -5,7 +5,6 @@ import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-
 export default function Chatbot({
   title = "AI Assistant 🤖",
   prompt = "You are a helpful AI assistant.",
@@ -19,7 +18,7 @@ export default function Chatbot({
   const [loading, setLoading] = useState(false);
   const [docContext, setDocContext] = useState("");
   const endRef = useRef(null);
-   const API_BASE = import.meta.env.VITE_API_URL;
+  const API_BASE = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(messages));
@@ -47,47 +46,42 @@ export default function Chatbot({
     return text;
   };
 
+  const sendMessage = async (text) => {
+    if (!text.trim()) return;
 
+    setMessages((prev) => [...prev, { role: "user", text }]);
+    setInput("");
+    setLoading(true);
 
-const sendMessage = async (text) => {
-  if (!text.trim()) return;
+    try {
+      const res = await fetch(`${API_BASE}/ai/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          prompt,
+          docContext,
+        }),
+      });
 
-  setMessages((prev) => [...prev, { role: "user", text }]);
-  setInput("");
-  setLoading(true);
+      const data = await res.json();
 
-  try {
-    const res = await fetch(`${API_BASE}/ai/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: text,
-        prompt,
-        docContext,
-      }),
-    });
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: data.reply || "No response" },
+      ]);
 
-    const data = await res.json();
-
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", text: data.reply || "No response" },
-    ]);
-
-    speak(data.reply);
-
-  } catch (err) {
-    console.error("Chat error:", err);
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", text: "⚠️ Backend not responding." },
-    ]);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+      speak(data.reply);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "⚠️ Backend not responding." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   //clear chat function
   const clearChat = () => {

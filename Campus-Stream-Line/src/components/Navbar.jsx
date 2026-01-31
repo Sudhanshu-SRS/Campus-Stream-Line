@@ -58,6 +58,15 @@ const Navbar = () => {
             />
           )}
 
+          {user && role === "institute_admin" && (
+            <NavItem
+              to="/institute/"
+              icon={<LayoutDashboard size={18} />}
+              label="Dashboard"
+              institute
+            />
+          )}
+
           {user && (
             <div className="flex items-center gap-3 ml-3">
               <Link to="/profile">
