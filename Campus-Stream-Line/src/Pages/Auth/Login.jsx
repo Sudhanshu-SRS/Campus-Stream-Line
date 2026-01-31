@@ -292,7 +292,7 @@ const Login = ({ role = "institute" }) => {
 
       login(res.data);
       alert("Login successful");
-      navigate(role === "student" ? "/student/dashboard" : "/");
+      navigate(role === "student" ? "/student/dashboard" : "/institute/");
     } catch {
       alert("Invalid credentials");
     } finally {

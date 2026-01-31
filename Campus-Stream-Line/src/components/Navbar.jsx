@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const role = user.role;
 
   return (
     <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-200 shadow-sm">
@@ -48,7 +49,7 @@ const Navbar = () => {
             </>
           )}
 
-          {user && (
+          {user && role === "student" && (
             <NavItem
               to="/student/dashboard"
               icon={<LayoutDashboard size={18} />}
